@@ -11,7 +11,19 @@
    gameType: GameType;
  }
  
- export type GameType = 'fill-blanks' | 'sentence-correction' | 'word-order' | 'listening-fill' | 'speaking-practice';
+export type GameType = 
+  | 'fill-blanks' 
+  | 'sentence-correction' 
+  | 'word-order' 
+  | 'match-pairs'
+  | 'multiple-choice'
+  | 'spot-error'
+  | 'transform-sentence'
+  | 'context-clues'
+  | 'dictation'
+  | 'pronunciation-match'
+  | 'photo-description'
+  | 'true-false';
  
  export interface Question {
    id: string;
@@ -22,6 +34,12 @@
    explanation: string;
    sentence?: string;
    words?: string[];
+  pairs?: { left: string; right: string }[];
+  imageUrl?: string;
+  audioText?: string;
+  statement?: string;
+  isTrue?: boolean;
+  transformRule?: string;
  }
  
  export interface GameResult {

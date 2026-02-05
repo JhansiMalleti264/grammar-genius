@@ -5,6 +5,15 @@
  import FillBlanksGame from './games/FillBlanksGame';
  import SentenceCorrectionGame from './games/SentenceCorrectionGame';
  import WordOrderGame from './games/WordOrderGame';
+import MatchPairsGame from './games/MatchPairsGame';
+import MultipleChoiceGame from './games/MultipleChoiceGame';
+import SpotErrorGame from './games/SpotErrorGame';
+import TransformSentenceGame from './games/TransformSentenceGame';
+import ContextCluesGame from './games/ContextCluesGame';
+import DictationGame from './games/DictationGame';
+import PronunciationMatchGame from './games/PronunciationMatchGame';
+import PhotoDescriptionGame from './games/PhotoDescriptionGame';
+import TrueFalseGame from './games/TrueFalseGame';
  import ResultsPage from './games/ResultsPage';
  import { Button } from '@/components/ui/button';
  import { ArrowRight } from 'lucide-react';
@@ -116,6 +125,87 @@
              showResult={showResult}
            />
          );
+      case 'match-pairs':
+        return (
+          <MatchPairsGame
+            key={currentQuestion.id}
+            question={currentQuestion}
+            onAnswer={handleAnswer}
+            showResult={showResult}
+          />
+        );
+      case 'multiple-choice':
+        return (
+          <MultipleChoiceGame
+            key={currentQuestion.id}
+            question={currentQuestion}
+            onAnswer={handleAnswer}
+            showResult={showResult}
+          />
+        );
+      case 'spot-error':
+        return (
+          <SpotErrorGame
+            key={currentQuestion.id}
+            question={currentQuestion}
+            onAnswer={handleAnswer}
+            showResult={showResult}
+          />
+        );
+      case 'transform-sentence':
+        return (
+          <TransformSentenceGame
+            key={currentQuestion.id}
+            question={currentQuestion}
+            onAnswer={handleAnswer}
+            showResult={showResult}
+          />
+        );
+      case 'context-clues':
+        return (
+          <ContextCluesGame
+            key={currentQuestion.id}
+            question={currentQuestion}
+            onAnswer={handleAnswer}
+            showResult={showResult}
+          />
+        );
+      case 'dictation':
+        return (
+          <DictationGame
+            key={currentQuestion.id}
+            question={currentQuestion}
+            onAnswer={handleAnswer}
+            showResult={showResult}
+          />
+        );
+      case 'pronunciation-match':
+        return (
+          <PronunciationMatchGame
+            key={currentQuestion.id}
+            question={currentQuestion}
+            onAnswer={handleAnswer}
+            showResult={showResult}
+          />
+        );
+      case 'photo-description':
+        return (
+          <PhotoDescriptionGame
+            key={currentQuestion.id}
+            question={currentQuestion}
+            onAnswer={handleAnswer}
+            showResult={showResult}
+          />
+        );
+      case 'true-false':
+        return (
+          <TrueFalseGame
+            key={currentQuestion.id}
+            question={currentQuestion}
+            onAnswer={handleAnswer}
+            showResult={showResult}
+          />
+        );
        default:
          return (
            <FillBlanksGame
