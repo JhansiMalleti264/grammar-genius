@@ -1,14 +1,29 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState } from 'react';
+import { Module } from '@/types/game';
+import Dashboard from '@/components/Dashboard';
+import GameContainer from '@/components/GameContainer';
 
 const Index = () => {
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
-    </div>
-  );
+  const [selectedModule, setSelectedModule] = useState<Module | null>(null);
+
+  const handleModuleSelect = (module: Module) => {
+    setSelectedModule(module);
+  };
+
+  const handleCloseGame = () => {
+    setSelectedModule(null);
+  };
+
+  if (selectedModule) {
+    return (
+      <GameContainer
+        module={selectedModule}
+        onClose={handleCloseGame}
+      />
+    );
+  }
+
+  return <Dashboard onModuleSelect={handleModuleSelect} />;
 };
 
 export default Index;
