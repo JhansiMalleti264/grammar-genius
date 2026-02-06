@@ -1,140 +1,139 @@
- import { Question } from '@/types/game';
- 
- export const fillBlanksQuestions: Question[] = [
-   {
-     id: 'fb-1',
-     type: 'fill-blanks',
-     prompt: 'She ___ to the store yesterday.',
-     options: ['go', 'goes', 'went', 'going'],
-     correctAnswer: 'went',
-     explanation: 'Use past tense "went" because the action happened "yesterday" (past time marker).',
-   },
-   {
-     id: 'fb-2',
-     type: 'fill-blanks',
-     prompt: 'If I ___ rich, I would travel the world.',
-     options: ['am', 'was', 'were', 'be'],
-     correctAnswer: 'were',
-     explanation: 'In conditional sentences expressing unreal situations, we use "were" for all subjects (subjunctive mood).',
-   },
-   {
-     id: 'fb-3',
-     type: 'fill-blanks',
-     prompt: 'Neither the teacher nor the students ___ ready for the test.',
-     options: ['is', 'are', 'was', 'were'],
-     correctAnswer: 'were',
-     explanation: 'With "neither...nor", the verb agrees with the nearest subject ("students" - plural), hence "were".',
-   },
-   {
-     id: 'fb-4',
-     type: 'fill-blanks',
-     prompt: 'By the time we arrive, the movie ___ already started.',
-     options: ['has', 'have', 'will have', 'had'],
-     correctAnswer: 'will have',
-     explanation: 'Future perfect tense ("will have") is used for actions that will be completed before a future time.',
-   },
-   {
-     id: 'fb-5',
-     type: 'fill-blanks',
-     prompt: 'The news ___ shocking to everyone.',
-     options: ['is', 'are', 'were', 'have been'],
-     correctAnswer: 'is',
-     explanation: '"News" is an uncountable noun that takes a singular verb, even though it ends in "s".',
-   },
- ];
- 
- export const sentenceCorrectionQuestions: Question[] = [
-   {
-     id: 'sc-1',
-     type: 'sentence-correction',
-     prompt: 'Find and fix the error:',
-     sentence: 'He don\'t know the answer to the question.',
-     options: ['He doesn\'t know the answer to the question.', 'He do not know the answer to the question.', 'He don\'t knows the answer to the question.', 'No error'],
-     correctAnswer: 'He doesn\'t know the answer to the question.',
-     explanation: 'Third person singular subjects (he, she, it) require "doesn\'t" instead of "don\'t".',
-   },
-   {
-     id: 'sc-2',
-     type: 'sentence-correction',
-     prompt: 'Find and fix the error:',
-     sentence: 'Me and my friend went to the park.',
-     options: ['My friend and I went to the park.', 'I and my friend went to the park.', 'My friend and me went to the park.', 'No error'],
-     correctAnswer: 'My friend and I went to the park.',
-     explanation: 'Use "I" (not "me") as a subject. Also, it\'s polite to mention yourself last.',
-   },
-   {
-     id: 'sc-3',
-     type: 'sentence-correction',
-     prompt: 'Find and fix the error:',
-     sentence: 'Their going to the store later today.',
-     options: ['They\'re going to the store later today.', 'There going to the store later today.', 'Their are going to the store later today.', 'No error'],
-     correctAnswer: 'They\'re going to the store later today.',
-     explanation: '"They\'re" (they are) is needed here, not "their" (possessive) or "there" (location).',
-   },
-   {
-     id: 'sc-4',
-     type: 'sentence-correction',
-     prompt: 'Find and fix the error:',
-     sentence: 'The team have won the championship.',
-     options: ['The team has won the championship.', 'The team had won the championship.', 'The teams have won the championship.', 'No error'],
-     correctAnswer: 'The team has won the championship.',
-     explanation: 'Collective nouns like "team" typically take singular verbs in American English.',
-   },
-   {
-     id: 'sc-5',
-     type: 'sentence-correction',
-     prompt: 'Find and fix the error:',
-     sentence: 'She speaks English more better than her sister.',
-     options: ['She speaks English better than her sister.', 'She speaks English more good than her sister.', 'She speaks English most better than her sister.', 'No error'],
-     correctAnswer: 'She speaks English better than her sister.',
-     explanation: '"Better" is already a comparative form. Don\'t use "more" with it (double comparative error).',
-   },
- ];
- 
- export const wordOrderQuestions: Question[] = [
-   {
-     id: 'wo-1',
-     type: 'word-order',
-     prompt: 'Arrange the words to form a correct sentence:',
-     words: ['always', 'she', 'breakfast', 'eats', 'morning', 'in', 'the'],
-     correctAnswer: 'She always eats breakfast in the morning.',
-     explanation: 'Adverbs of frequency (always) typically come after the subject and before the main verb.',
-   },
-   {
-     id: 'wo-2',
-     type: 'word-order',
-     prompt: 'Arrange the words to form a correct sentence:',
-     words: ['never', 'have', 'I', 'to', 'Japan', 'been'],
-     correctAnswer: 'I have never been to Japan.',
-     explanation: 'In present perfect, "never" goes between "have" and the past participle.',
-   },
-   {
-     id: 'wo-3',
-     type: 'word-order',
-     prompt: 'Arrange the words to form a correct sentence:',
-     words: ['is', 'what', 'doing', 'he', 'now', 'right'],
-     correctAnswer: 'What is he doing right now?',
-     explanation: 'Question words come first, followed by auxiliary verb, subject, main verb, and time expression.',
-   },
-   {
-     id: 'wo-4',
-     type: 'word-order',
-     prompt: 'Arrange the words to form a correct sentence:',
-     words: ['quickly', 'ran', 'the', 'dog', 'very', 'home'],
-     correctAnswer: 'The dog ran home very quickly.',
-     explanation: 'Standard order: Subject + Verb + Place + Manner adverb. "Very" modifies "quickly".',
-   },
-   {
-     id: 'wo-5',
-     type: 'word-order',
-     prompt: 'Arrange the words to form a correct sentence:',
-     words: ['beautiful', 'a', 'is', 'this', 'really', 'painting'],
-     correctAnswer: 'This is a really beautiful painting.',
-     explanation: 'Demonstrative + verb + article + adverb + adjective + noun.',
-   },
- ];
- 
-// Match Pairs Questions
+import { Question } from '@/types/game';
+
+export const fillBlanksQuestions: Question[] = [
+  {
+    id: 'fb-1',
+    type: 'fill-blanks',
+    prompt: 'She ___ to the store yesterday.',
+    options: ['go', 'goes', 'went', 'going'],
+    correctAnswer: 'went',
+    explanation: 'Use past tense "went" because the action happened "yesterday" (past time marker).',
+  },
+  {
+    id: 'fb-2',
+    type: 'fill-blanks',
+    prompt: 'If I ___ rich, I would travel the world.',
+    options: ['am', 'was', 'were', 'be'],
+    correctAnswer: 'were',
+    explanation: 'In conditional sentences expressing unreal situations, we use "were" for all subjects (subjunctive mood).',
+  },
+  {
+    id: 'fb-3',
+    type: 'fill-blanks',
+    prompt: 'Neither the teacher nor the students ___ ready for the test.',
+    options: ['is', 'are', 'was', 'were'],
+    correctAnswer: 'were',
+    explanation: 'With "neither...nor", the verb agrees with the nearest subject ("students" - plural), hence "were".',
+  },
+  {
+    id: 'fb-4',
+    type: 'fill-blanks',
+    prompt: 'By the time we arrive, the movie ___ already started.',
+    options: ['has', 'have', 'will have', 'had'],
+    correctAnswer: 'will have',
+    explanation: 'Future perfect tense ("will have") is used for actions that will be completed before a future time.',
+  },
+  {
+    id: 'fb-5',
+    type: 'fill-blanks',
+    prompt: 'The news ___ shocking to everyone.',
+    options: ['is', 'are', 'were', 'have been'],
+    correctAnswer: 'is',
+    explanation: '"News" is an uncountable noun that takes a singular verb, even though it ends in "s".',
+  },
+];
+
+export const sentenceCorrectionQuestions: Question[] = [
+  {
+    id: 'sc-1',
+    type: 'sentence-correction',
+    prompt: 'Find and fix the error:',
+    sentence: 'He don\'t know the answer to the question.',
+    options: ['He doesn\'t know the answer to the question.', 'He do not know the answer to the question.', 'He don\'t knows the answer to the question.', 'No error'],
+    correctAnswer: 'He doesn\'t know the answer to the question.',
+    explanation: 'Third person singular subjects (he, she, it) require "doesn\'t" instead of "don\'t".',
+  },
+  {
+    id: 'sc-2',
+    type: 'sentence-correction',
+    prompt: 'Find and fix the error:',
+    sentence: 'Me and my friend went to the park.',
+    options: ['My friend and I went to the park.', 'I and my friend went to the park.', 'My friend and me went to the park.', 'No error'],
+    correctAnswer: 'My friend and I went to the park.',
+    explanation: 'Use "I" (not "me") as a subject. Also, it\'s polite to mention yourself last.',
+  },
+  {
+    id: 'sc-3',
+    type: 'sentence-correction',
+    prompt: 'Find and fix the error:',
+    sentence: 'Their going to the store later today.',
+    options: ['They\'re going to the store later today.', 'There going to the store later today.', 'Their are going to the store later today.', 'No error'],
+    correctAnswer: 'They\'re going to the store later today.',
+    explanation: '"They\'re" (they are) is needed here, not "their" (possessive) or "there" (location).',
+  },
+  {
+    id: 'sc-4',
+    type: 'sentence-correction',
+    prompt: 'Find and fix the error:',
+    sentence: 'The team have won the championship.',
+    options: ['The team has won the championship.', 'The team had won the championship.', 'The teams have won the championship.', 'No error'],
+    correctAnswer: 'The team has won the championship.',
+    explanation: 'Collective nouns like "team" typically take singular verbs in American English.',
+  },
+  {
+    id: 'sc-5',
+    type: 'sentence-correction',
+    prompt: 'Find and fix the error:',
+    sentence: 'She speaks English more better than her sister.',
+    options: ['She speaks English better than her sister.', 'She speaks English more good than her sister.', 'She speaks English most better than her sister.', 'No error'],
+    correctAnswer: 'She speaks English better than her sister.',
+    explanation: '"Better" is already a comparative form. Don\'t use "more" with it (double comparative error).',
+  },
+];
+
+export const wordOrderQuestions: Question[] = [
+  {
+    id: 'wo-1',
+    type: 'word-order',
+    prompt: 'Arrange the words to form a correct sentence:',
+    words: ['always', 'she', 'breakfast', 'eats', 'morning', 'in', 'the'],
+    correctAnswer: 'She always eats breakfast in the morning.',
+    explanation: 'Adverbs of frequency (always) typically come after the subject and before the main verb.',
+  },
+  {
+    id: 'wo-2',
+    type: 'word-order',
+    prompt: 'Arrange the words to form a correct sentence:',
+    words: ['never', 'have', 'I', 'to', 'Japan', 'been'],
+    correctAnswer: 'I have never been to Japan.',
+    explanation: 'In present perfect, "never" goes between "have" and the past participle.',
+  },
+  {
+    id: 'wo-3',
+    type: 'word-order',
+    prompt: 'Arrange the words to form a correct sentence:',
+    words: ['is', 'what', 'doing', 'he', 'now', 'right'],
+    correctAnswer: 'What is he doing right now?',
+    explanation: 'Question words come first, followed by auxiliary verb, subject, main verb, and time expression.',
+  },
+  {
+    id: 'wo-4',
+    type: 'word-order',
+    prompt: 'Arrange the words to form a correct sentence:',
+    words: ['quickly', 'ran', 'the', 'dog', 'very', 'home'],
+    correctAnswer: 'The dog ran home very quickly.',
+    explanation: 'Standard order: Subject + Verb + Place + Manner adverb. "Very" modifies "quickly".',
+  },
+  {
+    id: 'wo-5',
+    type: 'word-order',
+    prompt: 'Arrange the words to form a correct sentence:',
+    words: ['beautiful', 'a', 'is', 'this', 'really', 'painting'],
+    correctAnswer: 'This is a really beautiful painting.',
+    explanation: 'Demonstrative + verb + article + adverb + adjective + noun.',
+  },
+];
+
 export const matchPairsQuestions: Question[] = [
   {
     id: 'mp-1',
@@ -203,7 +202,6 @@ export const matchPairsQuestions: Question[] = [
   },
 ];
 
-// Multiple Choice Questions
 export const multipleChoiceQuestions: Question[] = [
   {
     id: 'mc-1',
@@ -262,7 +260,6 @@ export const multipleChoiceQuestions: Question[] = [
   },
 ];
 
-// Spot Error Questions
 export const spotErrorQuestions: Question[] = [
   {
     id: 'se-1',
@@ -306,7 +303,6 @@ export const spotErrorQuestions: Question[] = [
   },
 ];
 
-// Transform Sentence Questions
 export const transformSentenceQuestions: Question[] = [
   {
     id: 'ts-1',
@@ -355,7 +351,6 @@ export const transformSentenceQuestions: Question[] = [
   },
 ];
 
-// Context Clues Questions
 export const contextCluesQuestions: Question[] = [
   {
     id: 'cc-1',
@@ -404,7 +399,6 @@ export const contextCluesQuestions: Question[] = [
   },
 ];
 
-// Dictation Questions
 export const dictationQuestions: Question[] = [
   {
     id: 'dt-1',
@@ -448,7 +442,6 @@ export const dictationQuestions: Question[] = [
   },
 ];
 
-// Pronunciation Match Questions
 export const pronunciationMatchQuestions: Question[] = [
   {
     id: 'pm-1',
@@ -497,7 +490,6 @@ export const pronunciationMatchQuestions: Question[] = [
   },
 ];
 
-// Photo Description Questions
 export const photoDescriptionQuestions: Question[] = [
   {
     id: 'pd-1',
@@ -571,7 +563,6 @@ export const photoDescriptionQuestions: Question[] = [
   },
 ];
 
-// True False Questions
 export const trueFalseQuestions: Question[] = [
   {
     id: 'tf-1',
@@ -620,14 +611,250 @@ export const trueFalseQuestions: Question[] = [
   },
 ];
 
- export const getQuestionsForGame = (gameType: string): Question[] => {
-   switch (gameType) {
-     case 'fill-blanks':
-       return fillBlanksQuestions;
-     case 'sentence-correction':
-       return sentenceCorrectionQuestions;
-     case 'word-order':
-       return wordOrderQuestions;
+// Listen & Choose Questions (New)
+export const listenChooseQuestions: Question[] = [
+  {
+    id: 'lc-1',
+    type: 'listen-choose',
+    prompt: 'Listen to the sentence and choose the correct option:',
+    audioText: 'The meeting has been postponed until next week.',
+    options: [
+      'The meeting was canceled completely.',
+      'The meeting has been postponed until next week.',
+      'The meeting will start immediately.',
+      'The meeting happened yesterday.',
+    ],
+    correctAnswer: 'The meeting has been postponed until next week.',
+    explanation: 'The audio clearly states the meeting was "postponed until next week," not canceled.',
+  },
+  {
+    id: 'lc-2',
+    type: 'listen-choose',
+    prompt: 'Listen and select what you heard:',
+    audioText: 'Please turn off your mobile phones during the presentation.',
+    options: [
+      'Please charge your phones during the show.',
+      'Please turn on your phones after the meeting.',
+      'Please turn off your mobile phones during the presentation.',
+      'Mobile phones are allowed in the theater.',
+    ],
+    correctAnswer: 'Please turn off your mobile phones during the presentation.',
+    explanation: 'The instruction was to turn OFF phones during the presentation.',
+  },
+  {
+    id: 'lc-3',
+    type: 'listen-choose',
+    prompt: 'What did you hear?',
+    audioText: 'The library closes at nine o\'clock on weekdays.',
+    options: [
+      'The library opens at nine every day.',
+      'The library closes at nine o\'clock on weekdays.',
+      'The library is open twenty-four hours.',
+      'The library closes at six on Saturdays.',
+    ],
+    correctAnswer: 'The library closes at nine o\'clock on weekdays.',
+    explanation: 'The audio specifies the closing time is 9 PM on weekdays.',
+  },
+  {
+    id: 'lc-4',
+    type: 'listen-choose',
+    prompt: 'Listen carefully and choose:',
+    audioText: 'She would have called if she had known about the party.',
+    options: [
+      'She called about the party.',
+      'She didn\'t know about the party and didn\'t call.',
+      'She knew about the party but didn\'t call.',
+      'She will call about the party tomorrow.',
+    ],
+    correctAnswer: 'She didn\'t know about the party and didn\'t call.',
+    explanation: 'The third conditional implies she didn\'t know, so she didn\'t call.',
+  },
+  {
+    id: 'lc-5',
+    type: 'listen-choose',
+    prompt: 'Select the correct interpretation:',
+    audioText: 'I wish I had studied harder for the exam.',
+    options: [
+      'I studied hard and passed the exam.',
+      'I regret not studying harder for the exam.',
+      'I will study harder next time.',
+      'I don\'t need to study for exams.',
+    ],
+    correctAnswer: 'I regret not studying harder for the exam.',
+    explanation: '"I wish I had" expresses regret about a past action that didn\'t happen.',
+  },
+];
+
+// Audio Word Match Questions (New)
+export const audioWordMatchQuestions: Question[] = [
+  {
+    id: 'awm-1',
+    type: 'audio-word-match',
+    prompt: 'Match each word you hear to its written form:',
+    pairs: [
+      { left: 'comfortable', right: 'comfortable' },
+      { left: 'necessary', right: 'necessary' },
+      { left: 'beautiful', right: 'beautiful' },
+      { left: 'interesting', right: 'interesting' },
+    ],
+    correctAnswer: 'all matched',
+    explanation: 'These commonly used words can be tricky to spell. Practice helps!',
+  },
+  {
+    id: 'awm-2',
+    type: 'audio-word-match',
+    prompt: 'Match the spoken words to correct spelling:',
+    pairs: [
+      { left: 'receive', right: 'receive' },
+      { left: 'believe', right: 'believe' },
+      { left: 'achieve', right: 'achieve' },
+      { left: 'perceive', right: 'perceive' },
+    ],
+    correctAnswer: 'all matched',
+    explanation: 'Words with "ie" vs "ei" follow the rule: "i before e except after c."',
+  },
+  {
+    id: 'awm-3',
+    type: 'audio-word-match',
+    prompt: 'Listen and match homophones:',
+    pairs: [
+      { left: 'their', right: 'their' },
+      { left: 'there', right: 'there' },
+      { left: 'they\'re', right: 'they\'re' },
+      { left: 'wear', right: 'wear' },
+    ],
+    correctAnswer: 'all matched',
+    explanation: 'Homophones sound the same but have different spellings and meanings.',
+  },
+  {
+    id: 'awm-4',
+    type: 'audio-word-match',
+    prompt: 'Match spoken contractions to their forms:',
+    pairs: [
+      { left: 'wouldn\'t', right: 'wouldn\'t' },
+      { left: 'shouldn\'t', right: 'shouldn\'t' },
+      { left: 'couldn\'t', right: 'couldn\'t' },
+      { left: 'won\'t', right: 'won\'t' },
+    ],
+    correctAnswer: 'all matched',
+    explanation: 'Contractions are shortened forms of words, marked with apostrophes.',
+  },
+  {
+    id: 'awm-5',
+    type: 'audio-word-match',
+    prompt: 'Match these frequently misspelled words:',
+    pairs: [
+      { left: 'definitely', right: 'definitely' },
+      { left: 'separately', right: 'separately' },
+      { left: 'occasionally', right: 'occasionally' },
+      { left: 'immediately', right: 'immediately' },
+    ],
+    correctAnswer: 'all matched',
+    explanation: 'These adverbs are commonly misspelled. Note the "-ly" endings.',
+  },
+];
+
+// Repeat Sentence Questions (New)
+export const repeatSentenceQuestions: Question[] = [
+  {
+    id: 'rs-1',
+    type: 'repeat-sentence',
+    prompt: 'Listen and repeat the sentence aloud:',
+    audioText: 'The weather is beautiful today.',
+    correctAnswer: 'The weather is beautiful today.',
+    explanation: 'Practice clear pronunciation of each word. Focus on the "th" sound in "weather."',
+  },
+  {
+    id: 'rs-2',
+    type: 'repeat-sentence',
+    prompt: 'Listen and repeat:',
+    audioText: 'Could you please help me with this problem?',
+    correctAnswer: 'Could you please help me with this problem?',
+    explanation: 'This is a polite request. Notice the rising intonation for questions.',
+  },
+  {
+    id: 'rs-3',
+    type: 'repeat-sentence',
+    prompt: 'Repeat after listening:',
+    audioText: 'I have been studying English for three years.',
+    correctAnswer: 'I have been studying English for three years.',
+    explanation: 'Present perfect continuous tense for ongoing actions. Stress "studying."',
+  },
+  {
+    id: 'rs-4',
+    type: 'repeat-sentence',
+    prompt: 'Listen carefully and repeat:',
+    audioText: 'The restaurant around the corner serves excellent food.',
+    correctAnswer: 'The restaurant around the corner serves excellent food.',
+    explanation: 'Practice the "r" sounds and link words smoothly together.',
+  },
+  {
+    id: 'rs-5',
+    type: 'repeat-sentence',
+    prompt: 'Repeat this sentence:',
+    audioText: 'If I had more time, I would travel the world.',
+    correctAnswer: 'If I had more time, I would travel the world.',
+    explanation: 'Second conditional structure. Notice the pause after the comma.',
+  },
+];
+
+// Answer by Voice Questions (New)
+export const answerByVoiceQuestions: Question[] = [
+  {
+    id: 'abv-1',
+    type: 'answer-by-voice',
+    prompt: 'Answer the question by speaking:',
+    voicePrompt: 'What is the past tense of "go"?',
+    correctAnswer: 'went',
+    spokenAnswer: 'went',
+    explanation: '"Go" is an irregular verb. Its past tense is "went," not "goed."',
+  },
+  {
+    id: 'abv-2',
+    type: 'answer-by-voice',
+    prompt: 'Speak your answer:',
+    voicePrompt: 'Complete this sentence: "She ___ to school every day."',
+    correctAnswer: 'goes',
+    spokenAnswer: 'goes',
+    explanation: 'Third person singular (she) requires "goes" in present simple.',
+  },
+  {
+    id: 'abv-3',
+    type: 'answer-by-voice',
+    prompt: 'Answer aloud:',
+    voicePrompt: 'What word means the opposite of "happy"?',
+    correctAnswer: 'sad',
+    spokenAnswer: 'sad',
+    explanation: '"Sad" is the most common antonym of "happy."',
+  },
+  {
+    id: 'abv-4',
+    type: 'answer-by-voice',
+    prompt: 'Speak your response:',
+    voicePrompt: 'Correct this sentence: "He don\'t like pizza."',
+    correctAnswer: 'He doesn\'t like pizza.',
+    spokenAnswer: 'doesn\'t',
+    explanation: 'Use "doesn\'t" for third person singular negative statements.',
+  },
+  {
+    id: 'abv-5',
+    type: 'answer-by-voice',
+    prompt: 'Answer by voice:',
+    voicePrompt: 'What is the plural of "child"?',
+    correctAnswer: 'children',
+    spokenAnswer: 'children',
+    explanation: '"Child" has an irregular plural: "children," not "childs."',
+  },
+];
+
+export const getQuestionsForGame = (gameType: string): Question[] => {
+  switch (gameType) {
+    case 'fill-blanks':
+      return fillBlanksQuestions;
+    case 'sentence-correction':
+      return sentenceCorrectionQuestions;
+    case 'word-order':
+      return wordOrderQuestions;
     case 'match-pairs':
       return matchPairsQuestions;
     case 'multiple-choice':
@@ -646,7 +873,15 @@ export const trueFalseQuestions: Question[] = [
       return photoDescriptionQuestions;
     case 'true-false':
       return trueFalseQuestions;
-     default:
-       return fillBlanksQuestions;
-   }
- };
+    case 'listen-choose':
+      return listenChooseQuestions;
+    case 'audio-word-match':
+      return audioWordMatchQuestions;
+    case 'repeat-sentence':
+      return repeatSentenceQuestions;
+    case 'answer-by-voice':
+      return answerByVoiceQuestions;
+    default:
+      return fillBlanksQuestions;
+  }
+};
