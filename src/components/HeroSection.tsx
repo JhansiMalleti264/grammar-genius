@@ -1,56 +1,83 @@
- import { Flame, Play } from 'lucide-react';
- import { Button } from '@/components/ui/button';
- 
- interface HeroSectionProps {
-   streak: number;
-   onStartPractice: () => void;
- }
- 
- const HeroSection = ({ streak, onStartPractice }: HeroSectionProps) => {
-   return (
-     <div className="relative overflow-hidden rounded-2xl bg-gradient-hero p-8 md:p-12 animate-slide-up">
-       {/* Background decoration */}
-       <div className="absolute -right-20 -top-20 h-80 w-80 rounded-full bg-gradient-primary opacity-20 blur-3xl" />
-       <div className="absolute -bottom-10 -right-10 h-60 w-60 rounded-full bg-secondary/30 blur-2xl" />
-       
-       <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
-         <div className="max-w-xl">
-           {/* Streak badge */}
-           <div className="streak-badge mb-6 animate-bounce-in">
-             <Flame className="h-4 w-4" />
-             <span>Active Streak: {streak} Days</span>
-           </div>
-           
-           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-primary-foreground mb-4">
-             Master the Art of{' '}
-             <span className="text-gradient">Communication.</span>
-           </h1>
-           
-           <p className="text-primary-foreground/70 text-lg mb-8 max-w-md">
-             Unlock native-level fluency with our adaptive AI curriculum designed to refine every facet of your language skills.
-           </p>
-           
-           <Button 
-             onClick={onStartPractice}
-             className="btn-gradient px-8 py-6 text-lg rounded-xl gap-3"
-           >
-             Practice Now
-             <Play className="h-5 w-5 fill-current" />
-           </Button>
-         </div>
-         
-         {/* 3D-like decorative shapes */}
-         <div className="hidden md:flex items-center justify-center">
-           <div className="relative">
-             <div className="w-32 h-32 rounded-full bg-gradient-primary animate-float opacity-80" />
-             <div className="absolute top-8 -right-8 w-24 h-24 rounded-full bg-secondary/60 animate-float animate-delay-200" />
-             <div className="absolute -bottom-4 right-4 w-16 h-16 rounded-full bg-accent/50 animate-float animate-delay-300" />
-             <div className="absolute top-0 right-16 w-10 h-10 rounded-full bg-primary-foreground/20 animate-pulse-soft" />
-           </div>
-         </div>
-       </div>
-     </div>
-   );
- };
- 
- export default HeroSection;
+import { Flame, Play, ArrowRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import heroImage from '@/assets/grammar-hero.png';
+
+interface HeroSectionProps {
+  streak: number;
+  onStartPractice: () => void;
+}
+
+const HeroSection = ({ streak, onStartPractice }: HeroSectionProps) => {
+  const scrollToModules = () => {
+    document.getElementById('modules-section')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  return (
+    <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-muted/50 via-background to-primary/5 animate-slide-up">
+      {/* Subtle background elements */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent" />
+      <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-background/80 to-transparent" />
+      
+      <div className="relative z-10 grid md:grid-cols-2 gap-8 items-center p-6 md:p-10 lg:p-12">
+        {/* Left: Content */}
+        <div className="order-2 md:order-1">
+          {/* Badge */}
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium mb-6 animate-bounce-in">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+            </span>
+            AI-Powered Grammar Learning
+          </div>
+          
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4 leading-tight">
+            Practice English Skills{' '}
+            <span className="text-gradient">with Smart AI Modules</span>
+          </h1>
+          
+          <p className="text-muted-foreground text-base md:text-lg mb-6 max-w-lg leading-relaxed">
+            Improve your speaking, reading, writing, and listening with interactive AI-powered exercises.
+          </p>
+          
+          {/* Streak Badge */}
+          <div className="streak-badge mb-8 animate-bounce-in animate-delay-100">
+            <Flame className="h-4 w-4" />
+            <span>{streak} Day Streak</span>
+          </div>
+          
+          {/* CTA Buttons */}
+          <div className="flex flex-wrap items-center gap-4">
+            <Button 
+              onClick={onStartPractice}
+              className="btn-gradient px-6 py-5 text-base rounded-xl gap-2"
+            >
+              <Play className="h-4 w-4 fill-current" />
+              Practice Now
+            </Button>
+            <Button 
+              variant="ghost"
+              onClick={scrollToModules}
+              className="px-6 py-5 text-base rounded-xl gap-2 text-primary hover:bg-primary/5"
+            >
+              Explore Modules
+              <ArrowRight className="h-4 w-4" />
+            </Button>
+          </div>
+        </div>
+        
+        {/* Right: Hero Image */}
+        <div className="order-1 md:order-2 flex items-center justify-center">
+          <div className="relative w-full max-w-lg animate-slide-up animate-delay-100">
+            <img 
+              src={heroImage} 
+              alt="AI Grammar Learning Platform"
+              className="w-full h-auto object-contain drop-shadow-2xl"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default HeroSection;
