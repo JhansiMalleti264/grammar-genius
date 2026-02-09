@@ -1,14 +1,25 @@
 export type Category = 'all' | 'reading' | 'writing' | 'speaking' | 'listening';
 
+export type Level = 1 | 2 | 3;
+
+export const levelLabels: Record<Level, string> = {
+  1: 'Foundation',
+  2: 'Skill Builder',
+  3: 'Advanced Mastery',
+};
+
 export interface Module {
   id: string;
   title: string;
   category: Exclude<Category, 'all'>;
   description: string;
-  duration: number;
-  progress: number;
-  icon: string;
-  gameType: GameType;
+  levels: {
+    level: Level;
+    title: string;
+    exercises: number;
+    completed: number;
+  }[];
+  gameTypes: GameType[];
 }
 
 export type GameType = 

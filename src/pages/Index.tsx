@@ -1,13 +1,15 @@
 import { useState } from 'react';
-import { Module } from '@/types/game';
+import { Module, Level } from '@/types/game';
 import Dashboard from '@/components/Dashboard';
 import GameContainer from '@/components/GameContainer';
 
 const Index = () => {
   const [selectedModule, setSelectedModule] = useState<Module | null>(null);
+  const [selectedLevel, setSelectedLevel] = useState<Level>(1);
 
-  const handleModuleSelect = (module: Module) => {
+  const handleModuleSelect = (module: Module, level: Level) => {
     setSelectedModule(module);
+    setSelectedLevel(level);
   };
 
   const handleCloseGame = () => {
@@ -18,6 +20,7 @@ const Index = () => {
     return (
       <GameContainer
         module={selectedModule}
+        level={selectedLevel}
         onClose={handleCloseGame}
       />
     );

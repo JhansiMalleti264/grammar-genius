@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Module, Question, GameResult } from '@/types/game';
+import { Module, Level, Question, GameResult, levelLabels } from '@/types/game';
 import { getQuestionsForGame } from '@/data/questions';
 import GameProgress from './games/GameProgress';
 import FillBlanksGame from './games/FillBlanksGame';
@@ -24,26 +24,31 @@ import { ArrowRight } from 'lucide-react';
 
 interface GameContainerProps {
   module: Module;
+  level: Level;
   onClose: () => void;
 }
 
-const GameContainer = ({ module, onClose }: GameContainerProps) => {
+const GameContainer = ({ module, level, onClose }: GameContainerProps) => {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showResult, setShowResult] = useState(false);
   const [answers, setAnswers] = useState<GameResult['answers']>([]);
   const [isComplete, setIsComplete] = useState(false);
   const [startTime] = useState(Date.now());
-  
+
   useEffect(() => {
-    const allQuestions = getQuestionsForGame(module.gameType);
-    // Take 3-5 random questions
+    // Gather questions from all game types for this module
+    const allQuestions: Question[] = [];
+    for (const gameType of module.gameTypes) {
+      allQuestions.push(...getQuestionsForGame(gameType));
+    }
     const shuffled = [...allQuestions].sort(() => Math.random() - 0.5);
-    setQuestions(shuffled.slice(0, Math.min(5, shuffled.length)));
-  }, [module.gameType]);
-  
+    const exerciseCount = module.levels.find(l => l.level === level)?.exercises ?? 5;
+    setQuestions(shuffled.slice(0, Math.min(exerciseCount, shuffled.length)));
+  }, [module, level]);
+
   const currentQuestion = questions[currentIndex];
-  
+
   const handleAnswer = (userAnswer: string, isCorrect: boolean) => {
     setShowResult(true);
     setAnswers(prev => [...prev, {
@@ -54,7 +59,7 @@ const GameContainer = ({ module, onClose }: GameContainerProps) => {
       explanation: currentQuestion.explanation,
     }]);
   };
-  
+
   const handleNext = () => {
     if (currentIndex < questions.length - 1) {
       setCurrentIndex(prev => prev + 1);
@@ -63,25 +68,29 @@ const GameContainer = ({ module, onClose }: GameContainerProps) => {
       setIsComplete(true);
     }
   };
-  
+
   const handleRetry = () => {
-    const allQuestions = getQuestionsForGame(module.gameType);
+    const allQuestions: Question[] = [];
+    for (const gameType of module.gameTypes) {
+      allQuestions.push(...getQuestionsForGame(gameType));
+    }
     const shuffled = [...allQuestions].sort(() => Math.random() - 0.5);
-    setQuestions(shuffled.slice(0, Math.min(5, shuffled.length)));
+    const exerciseCount = module.levels.find(l => l.level === level)?.exercises ?? 5;
+    setQuestions(shuffled.slice(0, Math.min(exerciseCount, shuffled.length)));
     setCurrentIndex(0);
     setShowResult(false);
     setAnswers([]);
     setIsComplete(false);
   };
-  
+
   if (questions.length === 0) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="animate-pulse text-muted-foreground">Loading...</div>
+        <div className="animate-pulse text-muted-foreground">Loading exercises...</div>
       </div>
     );
   }
-  
+
   if (isComplete) {
     const result: GameResult = {
       totalQuestions: questions.length,
@@ -89,175 +98,47 @@ const GameContainer = ({ module, onClose }: GameContainerProps) => {
       answers,
       timeTaken: Math.floor((Date.now() - startTime) / 1000),
     };
-    
+
     return (
       <ResultsPage
         result={result}
         onRetry={handleRetry}
         onHome={onClose}
         moduleTitle={module.title}
+        levelLabel={levelLabels[level]}
       />
     );
   }
-  
+
   const renderGame = () => {
+    const gameProps = {
+      key: currentQuestion.id,
+      question: currentQuestion,
+      onAnswer: handleAnswer,
+      showResult,
+    };
+
     switch (currentQuestion.type) {
-      case 'fill-blanks':
-        return (
-          <FillBlanksGame
-            key={currentQuestion.id}
-            question={currentQuestion}
-            onAnswer={handleAnswer}
-            showResult={showResult}
-          />
-        );
-      case 'sentence-correction':
-        return (
-          <SentenceCorrectionGame
-            key={currentQuestion.id}
-            question={currentQuestion}
-            onAnswer={handleAnswer}
-            showResult={showResult}
-          />
-        );
-      case 'word-order':
-        return (
-          <WordOrderGame
-            key={currentQuestion.id}
-            question={currentQuestion}
-            onAnswer={handleAnswer}
-            showResult={showResult}
-          />
-        );
-      case 'match-pairs':
-        return (
-          <MatchPairsGame
-            key={currentQuestion.id}
-            question={currentQuestion}
-            onAnswer={handleAnswer}
-            showResult={showResult}
-          />
-        );
-      case 'multiple-choice':
-        return (
-          <MultipleChoiceGame
-            key={currentQuestion.id}
-            question={currentQuestion}
-            onAnswer={handleAnswer}
-            showResult={showResult}
-          />
-        );
-      case 'spot-error':
-        return (
-          <SpotErrorGame
-            key={currentQuestion.id}
-            question={currentQuestion}
-            onAnswer={handleAnswer}
-            showResult={showResult}
-          />
-        );
-      case 'transform-sentence':
-        return (
-          <TransformSentenceGame
-            key={currentQuestion.id}
-            question={currentQuestion}
-            onAnswer={handleAnswer}
-            showResult={showResult}
-          />
-        );
-      case 'context-clues':
-        return (
-          <ContextCluesGame
-            key={currentQuestion.id}
-            question={currentQuestion}
-            onAnswer={handleAnswer}
-            showResult={showResult}
-          />
-        );
-      case 'dictation':
-        return (
-          <DictationGame
-            key={currentQuestion.id}
-            question={currentQuestion}
-            onAnswer={handleAnswer}
-            showResult={showResult}
-          />
-        );
-      case 'pronunciation-match':
-        return (
-          <PronunciationMatchGame
-            key={currentQuestion.id}
-            question={currentQuestion}
-            onAnswer={handleAnswer}
-            showResult={showResult}
-          />
-        );
-      case 'photo-description':
-        return (
-          <PhotoDescriptionGame
-            key={currentQuestion.id}
-            question={currentQuestion}
-            onAnswer={handleAnswer}
-            showResult={showResult}
-          />
-        );
-      case 'true-false':
-        return (
-          <TrueFalseGame
-            key={currentQuestion.id}
-            question={currentQuestion}
-            onAnswer={handleAnswer}
-            showResult={showResult}
-          />
-        );
-      case 'listen-choose':
-        return (
-          <ListenChooseGame
-            key={currentQuestion.id}
-            question={currentQuestion}
-            onAnswer={handleAnswer}
-            showResult={showResult}
-          />
-        );
-      case 'audio-word-match':
-        return (
-          <AudioWordMatchGame
-            key={currentQuestion.id}
-            question={currentQuestion}
-            onAnswer={handleAnswer}
-            showResult={showResult}
-          />
-        );
-      case 'repeat-sentence':
-        return (
-          <RepeatSentenceGame
-            key={currentQuestion.id}
-            question={currentQuestion}
-            onAnswer={handleAnswer}
-            showResult={showResult}
-          />
-        );
-      case 'answer-by-voice':
-        return (
-          <AnswerByVoiceGame
-            key={currentQuestion.id}
-            question={currentQuestion}
-            onAnswer={handleAnswer}
-            showResult={showResult}
-          />
-        );
-      default:
-        return (
-          <FillBlanksGame
-            key={currentQuestion.id}
-            question={currentQuestion}
-            onAnswer={handleAnswer}
-            showResult={showResult}
-          />
-        );
+      case 'fill-blanks': return <FillBlanksGame {...gameProps} />;
+      case 'sentence-correction': return <SentenceCorrectionGame {...gameProps} />;
+      case 'word-order': return <WordOrderGame {...gameProps} />;
+      case 'match-pairs': return <MatchPairsGame {...gameProps} />;
+      case 'multiple-choice': return <MultipleChoiceGame {...gameProps} />;
+      case 'spot-error': return <SpotErrorGame {...gameProps} />;
+      case 'transform-sentence': return <TransformSentenceGame {...gameProps} />;
+      case 'context-clues': return <ContextCluesGame {...gameProps} />;
+      case 'dictation': return <DictationGame {...gameProps} />;
+      case 'pronunciation-match': return <PronunciationMatchGame {...gameProps} />;
+      case 'photo-description': return <PhotoDescriptionGame {...gameProps} />;
+      case 'true-false': return <TrueFalseGame {...gameProps} />;
+      case 'listen-choose': return <ListenChooseGame {...gameProps} />;
+      case 'audio-word-match': return <AudioWordMatchGame {...gameProps} />;
+      case 'repeat-sentence': return <RepeatSentenceGame {...gameProps} />;
+      case 'answer-by-voice': return <AnswerByVoiceGame {...gameProps} />;
+      default: return <FillBlanksGame {...gameProps} />;
     }
   };
-  
+
   return (
     <div className="min-h-screen bg-background p-4 md:p-8">
       <div className="max-w-2xl mx-auto">
@@ -266,9 +147,9 @@ const GameContainer = ({ module, onClose }: GameContainerProps) => {
           totalQuestions={questions.length}
           onClose={onClose}
         />
-        
+
         {renderGame()}
-        
+
         {showResult && (
           <Button
             onClick={handleNext}

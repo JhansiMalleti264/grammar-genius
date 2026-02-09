@@ -1,145 +1,122 @@
-import { Module } from '@/types/game';
-import { 
-  BookOpen, Edit, Headphones, Mic, Clock, ArrowRight, 
-  CheckSquare, Link, Shuffle, Search, AlertCircle, PenTool, 
-  RefreshCw, Image, ClipboardList, Volume2, MessageCircle, 
-  Radio, Music 
-} from 'lucide-react';
+import { Module, Level, levelLabels } from '@/types/game';
+import { ArrowRight, Lock } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
 
 interface ModuleCardProps {
   module: Module;
   index: number;
-  onClick: () => void;
+  onSelectLevel: (module: Module, level: Level) => void;
 }
 
-const categoryStyles = {
-  reading: {
-    color: 'text-primary',
-    bg: 'bg-primary/10',
-    border: 'border-primary/20',
-    badge: 'bg-primary/10 text-primary border-primary/20',
-  },
-  writing: {
-    color: 'text-secondary',
-    bg: 'bg-secondary/10',
-    border: 'border-secondary/20',
-    badge: 'bg-secondary/10 text-secondary border-secondary/20',
-  },
-  speaking: {
-    color: 'text-accent',
-    bg: 'bg-accent/10',
-    border: 'border-accent/20',
-    badge: 'bg-accent/10 text-accent border-accent/20',
-  },
-  listening: {
-    color: 'text-listening',
-    bg: 'bg-listening/10',
-    border: 'border-listening/20',
-    badge: 'bg-listening/10 text-listening border-listening/20',
-  },
+const categoryColors: Record<string, { dot: string; text: string; bg: string }> = {
+  speaking: { dot: 'bg-accent', text: 'text-accent', bg: 'bg-accent/8' },
+  writing: { dot: 'bg-secondary', text: 'text-secondary', bg: 'bg-secondary/8' },
+  reading: { dot: 'bg-primary', text: 'text-primary', bg: 'bg-primary/8' },
+  listening: { dot: 'bg-listening', text: 'text-listening', bg: 'bg-listening/8' },
 };
 
-const categoryIcons = {
-  reading: BookOpen,
-  writing: Edit,
-  speaking: Mic,
-  listening: Headphones,
-};
+const ModuleCard = ({ module, index, onSelectLevel }: ModuleCardProps) => {
+  const colors = categoryColors[module.category];
+  const totalExercises = module.levels.reduce((sum, l) => sum + l.exercises, 0);
+  const totalCompleted = module.levels.reduce((sum, l) => sum + l.completed, 0);
+  const overallProgress = totalExercises > 0 ? Math.round((totalCompleted / totalExercises) * 100) : 0;
 
-const moduleIcons: Record<string, any> = {
-  BookOpen,
-  Edit,
-  Headphones,
-  Mic,
-  CheckSquare,
-  Link,
-  Shuffle,
-  Search,
-  AlertCircle,
-  PenTool,
-  RefreshCw,
-  Image,
-  ClipboardList,
-  Volume2,
-  MessageCircle,
-  Radio,
-  Music,
-};
+  // Determine current active level
+  const currentLevel: Level = module.levels.find(l => l.completed < l.exercises)?.level ?? 3;
 
-const ModuleCard = ({ module, index, onClick }: ModuleCardProps) => {
-  const style = categoryStyles[module.category];
-  const CategoryIcon = categoryIcons[module.category];
-  const ModuleIcon = moduleIcons[module.icon] || BookOpen;
-  
   return (
-    <div 
+    <div
       className={cn(
-        'group relative p-5 rounded-xl border bg-card cursor-pointer',
+        'group relative bg-card rounded-2xl border border-border p-5',
         'transition-all duration-300 ease-out',
-        'hover:shadow-lg hover:-translate-y-1 hover:border-primary/30',
+        'hover:shadow-card-hover hover:-translate-y-1 hover:border-primary/20',
         'animate-slide-up'
       )}
-      style={{ animationDelay: `${index * 40}ms` }}
-      onClick={onClick}
+      style={{ animationDelay: `${index * 50}ms` }}
     >
-      {/* Hover gradient overlay */}
-      <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-      
-      <div className="relative flex items-start gap-4">
-        {/* Icon */}
-        <div className={cn(
-          'shrink-0 p-3 rounded-xl transition-all duration-300',
-          style.bg,
-          style.border,
-          'border',
-          'group-hover:scale-110'
+      {/* Category badge */}
+      <div className="flex items-center justify-between mb-4">
+        <span className={cn(
+          'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold uppercase tracking-wider',
+          colors.bg, colors.text
         )}>
-          <ModuleIcon className={cn('h-5 w-5', style.color)} />
-        </div>
-        
-        {/* Content */}
-        <div className="flex-1 min-w-0">
-          <div className="flex items-start justify-between gap-3 mb-2">
-            <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors line-clamp-1">
-              {module.title}
-            </h3>
-            <div className="flex items-center gap-1 text-xs text-muted-foreground shrink-0">
-              <Clock className="h-3 w-3" />
-              <span>{module.duration}m</span>
-            </div>
-          </div>
-          
-          {/* Category Badge */}
-          <div className={cn(
-            'inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-medium uppercase tracking-wider mb-2 border',
-            style.badge
-          )}>
-            <CategoryIcon className="h-3 w-3" />
-            {module.category}
-          </div>
-          
-          <p className="text-sm text-muted-foreground line-clamp-1 mb-3">
-            {module.description}
-          </p>
-          
-          {/* Progress Bar */}
-          <div className="flex items-center gap-3">
-            <div className="flex-1 h-1.5 rounded-full bg-muted overflow-hidden">
-              <div 
-                className="h-full rounded-full bg-gradient-primary transition-all duration-700 ease-out"
-                style={{ width: `${module.progress}%` }}
-              />
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-medium text-muted-foreground">
-                {module.progress}%
-              </span>
-              <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
-            </div>
-          </div>
-        </div>
+          <span className={cn('w-1.5 h-1.5 rounded-full', colors.dot)} />
+          {module.category}
+        </span>
+        <span className="text-xs text-muted-foreground font-medium">
+          {overallProgress}% complete
+        </span>
       </div>
+
+      {/* Title & Description */}
+      <h3 className="text-base font-semibold text-foreground mb-1.5 group-hover:text-primary transition-colors leading-snug">
+        {module.title}
+      </h3>
+      <p className="text-sm text-muted-foreground mb-4 leading-relaxed line-clamp-2">
+        {module.description}
+      </p>
+
+      {/* Level Progress Steps */}
+      <div className="space-y-2 mb-4">
+        {module.levels.map((lvl) => {
+          const isUnlocked = lvl.level <= currentLevel;
+          const progress = lvl.exercises > 0 ? Math.round((lvl.completed / lvl.exercises) * 100) : 0;
+
+          return (
+            <button
+              key={lvl.level}
+              disabled={!isUnlocked}
+              onClick={() => isUnlocked && onSelectLevel(module, lvl.level)}
+              className={cn(
+                'w-full flex items-center gap-3 px-3 py-2 rounded-xl text-left transition-all duration-200',
+                isUnlocked
+                  ? 'hover:bg-muted/60 cursor-pointer'
+                  : 'opacity-50 cursor-not-allowed'
+              )}
+            >
+              {/* Level indicator */}
+              <div className={cn(
+                'w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold shrink-0',
+                progress === 100
+                  ? 'bg-success/15 text-success'
+                  : isUnlocked
+                    ? 'bg-primary/10 text-primary'
+                    : 'bg-muted text-muted-foreground'
+              )}>
+                {isUnlocked ? `L${lvl.level}` : <Lock className="h-3 w-3" />}
+              </div>
+
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-xs font-medium text-foreground truncate">
+                    {levelLabels[lvl.level]}
+                  </span>
+                  <span className="text-[10px] text-muted-foreground ml-2">
+                    {lvl.completed}/{lvl.exercises}
+                  </span>
+                </div>
+                <div className="h-1 rounded-full bg-muted overflow-hidden">
+                  <div
+                    className="h-full rounded-full bg-gradient-primary transition-all duration-700 ease-out"
+                    style={{ width: `${progress}%` }}
+                  />
+                </div>
+              </div>
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Start/Continue Button */}
+      <Button
+        onClick={() => onSelectLevel(module, currentLevel)}
+        variant="outline"
+        className="w-full rounded-xl py-2.5 text-sm font-medium border-primary/20 text-primary hover:bg-primary/5 group-hover:border-primary/40 transition-all"
+      >
+        {overallProgress > 0 ? 'Continue' : 'Start'}
+        <ArrowRight className="h-4 w-4 ml-1.5 group-hover:translate-x-0.5 transition-transform" />
+      </Button>
     </div>
   );
 };

@@ -1,8 +1,5 @@
 import { GameResult } from '@/types/game';
-import { 
-  Trophy, Target, Lightbulb, TrendingUp, RotateCcw, Home, 
-  CheckCircle, XCircle, Zap, Clock, ChevronDown, ChevronUp 
-} from 'lucide-react';
+import { TrendingUp, Lightbulb, RotateCcw, Play, CheckCircle, XCircle, Zap, Clock, ChevronDown, ChevronUp, BarChart3 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useMemo, useState, useEffect } from 'react';
@@ -12,54 +9,53 @@ interface ResultsPageProps {
   onRetry: () => void;
   onHome: () => void;
   moduleTitle: string;
+  levelLabel?: string;
 }
 
-const generateAIFeedback = (result: GameResult) => {
+const generateFeedback = (result: GameResult) => {
   const score = (result.correctAnswers / result.totalQuestions) * 100;
-  
-  const strengths: string[] = [];
   const improvements: string[] = [];
   const tips: string[] = [];
-  
+
   if (score >= 80) {
-    strengths.push('Strong command of grammar fundamentals');
-    strengths.push('Accurate and confident responses');
-    tips.push('Challenge yourself with advanced modules');
+    tips.push('Challenge yourself with the next level to keep improving.');
+    tips.push('Say the sentences out loud to hear the rhythm.');
   } else if (score >= 60) {
-    strengths.push('Good understanding of basic rules');
-    improvements.push('Review verb tense consistency');
-    tips.push('Practice daily for better retention');
+    improvements.push('Focus on subject-verb agreement in complex sentences.');
+    improvements.push('Review basic sentence structure for negative forms.');
+    tips.push('Start with easier modules to build your confidence.');
+    tips.push('Say the sentences out loud to hear the rhythm.');
   } else {
-    improvements.push('Focus on subject-verb agreement');
-    improvements.push('Review basic sentence structure');
-    tips.push('Start with easier modules');
+    improvements.push('Focus on subject-verb agreement in complex sentences.');
+    improvements.push('Review basic sentence structure for negative forms.');
+    tips.push('Start with easier modules to build your confidence.');
+    tips.push('Practice daily for 10 minutes for better retention.');
   }
-  
-  return { overallScore: score, strengths, improvements, tips };
+
+  return { overallScore: score, improvements, tips };
 };
 
 const getScoreData = (score: number) => {
-  if (score === 100) return { message: 'Perfect!', color: 'text-success', bg: 'bg-success/10', border: 'border-success/30' };
-  if (score >= 80) return { message: 'Excellent!', color: 'text-success', bg: 'bg-success/10', border: 'border-success/30' };
-  if (score >= 60) return { message: 'Good Job!', color: 'text-warning', bg: 'bg-warning/10', border: 'border-warning/30' };
-  if (score >= 40) return { message: 'Keep Going!', color: 'text-warning', bg: 'bg-warning/10', border: 'border-warning/30' };
-  return { message: 'Keep Practicing!', color: 'text-destructive', bg: 'bg-destructive/10', border: 'border-destructive/30' };
+  if (score === 100) return { message: 'Perfect!', ring: 'stroke-success' };
+  if (score >= 80) return { message: 'Excellent!', ring: 'stroke-success' };
+  if (score >= 60) return { message: 'Good Job!', ring: 'stroke-primary' };
+  if (score >= 40) return { message: 'Keep Going!', ring: 'stroke-warning' };
+  return { message: 'Keep Practicing!', ring: 'stroke-destructive' };
 };
 
-const ResultsPage = ({ result, onRetry, onHome, moduleTitle }: ResultsPageProps) => {
-  const feedback = useMemo(() => generateAIFeedback(result), [result]);
+const ResultsPage = ({ result, onRetry, onHome, moduleTitle, levelLabel }: ResultsPageProps) => {
+  const feedback = useMemo(() => generateFeedback(result), [result]);
   const score = Math.round((result.correctAnswers / result.totalQuestions) * 100);
   const [animatedScore, setAnimatedScore] = useState(0);
   const [showReview, setShowReview] = useState(false);
   const scoreData = getScoreData(score);
   const xpEarned = result.correctAnswers * 10 + (score === 100 ? 50 : 0);
-  
+
   useEffect(() => {
     const duration = 1200;
     const steps = 40;
     const increment = score / steps;
     let current = 0;
-    
     const timer = setInterval(() => {
       current += increment;
       if (current >= score) {
@@ -69,158 +65,138 @@ const ResultsPage = ({ result, onRetry, onHome, moduleTitle }: ResultsPageProps)
         setAnimatedScore(Math.floor(current));
       }
     }, duration / steps);
-    
     return () => clearInterval(timer);
   }, [score]);
-  
+
+  const circumference = 2 * Math.PI * 54;
+  const strokeDashoffset = circumference - (circumference * animatedScore) / 100;
+
   return (
     <div className="min-h-screen bg-background p-4 md:p-6">
-      <div className="max-w-5xl mx-auto animate-slide-up">
-        {/* Top Section: Score Overview */}
-        <div className={cn(
-          'rounded-2xl p-6 md:p-8 mb-6 border',
-          scoreData.bg,
-          scoreData.border
-        )}>
-          <div className="grid md:grid-cols-3 gap-6 items-center">
-            {/* Left: Score Circle */}
-            <div className="flex flex-col items-center text-center">
-              <div className={cn(
-                'w-28 h-28 rounded-full flex items-center justify-center mb-3',
-                'bg-gradient-primary shadow-lg'
-              )}>
-                <span className="text-4xl font-bold text-primary-foreground tabular-nums">
-                  {animatedScore}%
-                </span>
+      <div className="max-w-3xl mx-auto animate-slide-up">
+
+        {/* ── Score Overview Card ── */}
+        <div className="bg-card rounded-2xl border border-border p-6 md:p-8 mb-5 shadow-card">
+          <div className="flex flex-col sm:flex-row items-center gap-6 sm:gap-8">
+            {/* Circular Score */}
+            <div className="relative w-32 h-32 shrink-0">
+              <svg className="w-full h-full -rotate-90" viewBox="0 0 120 120">
+                <circle cx="60" cy="60" r="54" fill="none" strokeWidth="8" className="stroke-muted" />
+                <circle
+                  cx="60" cy="60" r="54" fill="none" strokeWidth="8"
+                  strokeLinecap="round"
+                  className={cn(scoreData.ring, 'transition-all duration-1000 ease-out')}
+                  strokeDasharray={circumference}
+                  strokeDashoffset={strokeDashoffset}
+                />
+              </svg>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="text-3xl font-bold text-foreground tabular-nums">{animatedScore}%</span>
               </div>
-              <h1 className={cn('text-2xl font-bold', scoreData.color)}>
+            </div>
+
+            {/* Score Info */}
+            <div className="flex-1 text-center sm:text-left">
+              <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-1">
                 {scoreData.message}
               </h1>
-              <p className="text-sm text-muted-foreground mt-1">{moduleTitle}</p>
-            </div>
-            
-            {/* Center: Stats */}
-            <div className="flex flex-wrap justify-center gap-4 md:gap-6">
-              <div className="text-center px-4 py-2">
-                <div className="flex items-center justify-center gap-1 text-success mb-1">
-                  <CheckCircle className="h-4 w-4" />
-                  <span className="text-2xl font-bold">{result.correctAnswers}</span>
+              <p className="text-sm text-muted-foreground mb-4">
+                {moduleTitle}{levelLabel ? ` • ${levelLabel}` : ''}
+              </p>
+
+              {/* Stats Row */}
+              <div className="flex items-center justify-center sm:justify-start gap-6">
+                <div className="flex items-center gap-1.5">
+                  <CheckCircle className="h-4 w-4 text-success" />
+                  <span className="text-sm font-medium text-muted-foreground uppercase tracking-wide">Correct</span>
+                  <span className="text-xl font-bold text-foreground ml-1">{result.correctAnswers}</span>
                 </div>
-                <p className="text-xs text-muted-foreground uppercase tracking-wide">Correct</p>
-              </div>
-              <div className="text-center px-4 py-2">
-                <div className="flex items-center justify-center gap-1 text-destructive mb-1">
-                  <XCircle className="h-4 w-4" />
-                  <span className="text-2xl font-bold">{result.totalQuestions - result.correctAnswers}</span>
+                <div className="flex items-center gap-1.5">
+                  <XCircle className="h-4 w-4 text-destructive" />
+                  <span className="text-sm font-medium text-muted-foreground uppercase tracking-wide">Incorrect</span>
+                  <span className="text-xl font-bold text-foreground ml-1">{result.totalQuestions - result.correctAnswers}</span>
                 </div>
-                <p className="text-xs text-muted-foreground uppercase tracking-wide">Incorrect</p>
-              </div>
-              <div className="text-center px-4 py-2">
-                <div className="flex items-center justify-center gap-1 text-muted-foreground mb-1">
-                  <Clock className="h-4 w-4" />
-                  <span className="text-2xl font-bold">{Math.floor(result.timeTaken / 60)}:{(result.timeTaken % 60).toString().padStart(2, '0')}</span>
+                <div className="flex items-center gap-1.5">
+                  <Clock className="h-4 w-4 text-primary" />
+                  <span className="text-sm font-medium text-muted-foreground uppercase tracking-wide">Time</span>
+                  <span className="text-xl font-bold text-foreground ml-1">
+                    {Math.floor(result.timeTaken / 60)}:{(result.timeTaken % 60).toString().padStart(2, '0')}
+                  </span>
                 </div>
-                <p className="text-xs text-muted-foreground uppercase tracking-wide">Time</p>
               </div>
             </div>
-            
-            {/* Right: XP & Answers Visual */}
-            <div className="flex flex-col items-center gap-3">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20">
-                <Zap className="h-5 w-5 text-primary" />
-                <span className="font-bold text-primary">+{xpEarned} XP</span>
+
+            {/* XP Badge + Dots */}
+            <div className="flex flex-col items-center gap-2 shrink-0">
+              <div className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-gradient-primary text-primary-foreground text-sm font-bold shadow-md">
+                <Zap className="h-4 w-4" />
+                +{xpEarned} XP
               </div>
-              <div className="flex gap-1.5">
+              <div className="flex gap-1">
                 {result.answers.map((answer, i) => (
                   <div
                     key={i}
                     className={cn(
-                      'w-8 h-8 rounded-lg flex items-center justify-center animate-bounce-in',
-                      answer.isCorrect ? 'bg-success/20' : 'bg-destructive/20'
+                      'w-3 h-3 rounded-full animate-bounce-in',
+                      answer.isCorrect ? 'bg-success' : 'bg-destructive'
                     )}
-                    style={{ animationDelay: `${i * 80}ms` }}
-                  >
-                    {answer.isCorrect ? (
-                      <CheckCircle className="h-4 w-4 text-success" />
-                    ) : (
-                      <XCircle className="h-4 w-4 text-destructive" />
-                    )}
-                  </div>
+                    style={{ animationDelay: `${i * 60}ms` }}
+                  />
                 ))}
               </div>
             </div>
           </div>
         </div>
-        
-        {/* Middle Section: AI Feedback */}
-        <div className="grid md:grid-cols-3 gap-4 mb-6">
-          {/* Strengths */}
-          {feedback.strengths.length > 0 && (
-            <div className="glass-card p-5 border border-success/20">
-              <div className="flex items-center gap-2 mb-3">
-                <div className="p-2 rounded-lg bg-success/10">
-                  <Target className="h-4 w-4 text-success" />
-                </div>
-                <h3 className="font-semibold text-foreground">Strengths</h3>
-              </div>
-              <ul className="space-y-2">
-                {feedback.strengths.map((item, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
-                    <CheckCircle className="h-4 w-4 text-success shrink-0 mt-0.5" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-          
-          {/* Improvements */}
+
+        {/* ── AI Feedback Cards ── */}
+        <div className="grid sm:grid-cols-2 gap-4 mb-5">
           {feedback.improvements.length > 0 && (
-            <div className="glass-card p-5 border border-warning/20">
-              <div className="flex items-center gap-2 mb-3">
+            <div className="bg-card rounded-2xl border border-border p-5 shadow-card">
+              <div className="flex items-center gap-2.5 mb-3">
                 <div className="p-2 rounded-lg bg-warning/10">
                   <TrendingUp className="h-4 w-4 text-warning" />
                 </div>
-                <h3 className="font-semibold text-foreground">To Improve</h3>
+                <h3 className="font-semibold text-foreground">Areas to Improve</h3>
               </div>
-              <ul className="space-y-2">
+              <ul className="space-y-2.5">
                 {feedback.improvements.map((item, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
-                    <TrendingUp className="h-4 w-4 text-warning shrink-0 mt-0.5" />
+                  <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground leading-relaxed">
+                    <span className="w-1.5 h-1.5 rounded-full bg-warning mt-2 shrink-0" />
                     {item}
                   </li>
                 ))}
               </ul>
             </div>
           )}
-          
-          {/* Tips */}
-          <div className="glass-card p-5 border border-primary/20">
-            <div className="flex items-center gap-2 mb-3">
+
+          <div className="bg-card rounded-2xl border border-border p-5 shadow-card">
+            <div className="flex items-center gap-2.5 mb-3">
               <div className="p-2 rounded-lg bg-primary/10">
                 <Lightbulb className="h-4 w-4 text-primary" />
               </div>
               <h3 className="font-semibold text-foreground">Pro Tips</h3>
             </div>
-            <ul className="space-y-2">
+            <ul className="space-y-2.5">
               {feedback.tips.map((item, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
-                  <Lightbulb className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+                <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground leading-relaxed">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary mt-2 shrink-0" />
                   {item}
                 </li>
               ))}
             </ul>
           </div>
         </div>
-        
-        {/* Question Review - Collapsible */}
-        <div className="glass-card mb-6 overflow-hidden">
+
+        {/* ── Collapsible Review Answers ── */}
+        <div className="bg-card rounded-2xl border border-border mb-5 overflow-hidden shadow-card">
           <button
             onClick={() => setShowReview(!showReview)}
-            className="w-full flex items-center justify-between p-5 hover:bg-muted/50 transition-colors"
+            className="w-full flex items-center justify-between p-5 hover:bg-muted/30 transition-colors"
           >
-            <div className="flex items-center gap-3">
-              <Trophy className="h-5 w-5 text-primary" />
+            <div className="flex items-center gap-2.5">
+              <div className="p-1.5 rounded-lg bg-primary/10">
+                <BarChart3 className="h-4 w-4 text-primary" />
+              </div>
               <span className="font-semibold text-foreground">Review Answers</span>
               <span className="text-sm text-muted-foreground">
                 ({result.correctAnswers}/{result.totalQuestions} correct)
@@ -232,17 +208,17 @@ const ResultsPage = ({ result, onRetry, onHome, moduleTitle }: ResultsPageProps)
               <ChevronDown className="h-5 w-5 text-muted-foreground" />
             )}
           </button>
-          
+
           {showReview && (
-            <div className="border-t border-border p-5 space-y-3 animate-slide-up">
+            <div className="border-t border-border p-5 space-y-4 animate-slide-up">
               {result.answers.map((answer, i) => (
-                <div 
+                <div
                   key={i}
                   className={cn(
                     'p-4 rounded-xl border',
-                    answer.isCorrect 
-                      ? 'border-success/30 bg-success/5' 
-                      : 'border-destructive/30 bg-destructive/5'
+                    answer.isCorrect
+                      ? 'border-success/20 bg-success/5'
+                      : 'border-destructive/20 bg-destructive/5'
                   )}
                 >
                   <div className="flex items-center justify-between mb-2">
@@ -250,51 +226,54 @@ const ResultsPage = ({ result, onRetry, onHome, moduleTitle }: ResultsPageProps)
                       Question {i + 1}
                     </span>
                     {answer.isCorrect ? (
-                      <span className="flex items-center gap-1 text-xs font-medium text-success">
-                        <CheckCircle className="h-3 w-3" /> Correct
+                      <span className="flex items-center gap-1 text-xs font-semibold text-success">
+                        <CheckCircle className="h-3.5 w-3.5" /> CORRECT
                       </span>
                     ) : (
-                      <span className="flex items-center gap-1 text-xs font-medium text-destructive">
-                        <XCircle className="h-3 w-3" /> Incorrect
+                      <span className="flex items-center gap-1 text-xs font-semibold text-destructive">
+                        <XCircle className="h-3.5 w-3.5" /> INCORRECT
                       </span>
                     )}
                   </div>
+
                   {!answer.isCorrect && (
-                    <div className="grid md:grid-cols-2 gap-2 mb-2 text-sm">
-                      <div className="flex items-center gap-2 text-destructive">
-                        <XCircle className="h-3 w-3" />
-                        <span>Your answer: <strong>{answer.userAnswer}</strong></span>
+                    <div className="grid sm:grid-cols-2 gap-2 mb-3">
+                      <div className="flex items-center gap-2 text-sm">
+                        <span className="font-medium text-muted-foreground uppercase text-xs tracking-wide">Your Answer</span>
+                        <span className="font-semibold text-destructive">{answer.userAnswer}</span>
                       </div>
-                      <div className="flex items-center gap-2 text-success">
-                        <CheckCircle className="h-3 w-3" />
-                        <span>Correct: <strong>{answer.correctAnswer}</strong></span>
+                      <div className="flex items-center gap-2 text-sm">
+                        <span className="font-medium text-muted-foreground uppercase text-xs tracking-wide">Correct Answer</span>
+                        <span className="font-semibold text-success">{answer.correctAnswer}</span>
                       </div>
                     </div>
                   )}
-                  <p className="text-sm text-muted-foreground bg-muted/50 p-2 rounded-lg">
-                    💡 {answer.explanation}
-                  </p>
+
+                  <div className="flex items-start gap-2 text-sm text-muted-foreground bg-muted/40 p-3 rounded-lg border border-border/50">
+                    <Lightbulb className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+                    <span><strong className="text-foreground">Linguistic Tip:</strong> {answer.explanation}</span>
+                  </div>
                 </div>
               ))}
             </div>
           )}
         </div>
-        
-        {/* Bottom Section: Action Buttons */}
+
+        {/* ── Action Buttons ── */}
         <div className="flex flex-col sm:flex-row gap-3">
           <Button
             onClick={onRetry}
             variant="outline"
-            className="flex-1 py-5 rounded-xl text-base font-medium hover:scale-[1.02] transition-transform"
+            className="flex-1 py-5 rounded-xl text-base font-medium border-border hover:border-primary/30 transition-all"
           >
             <RotateCcw className="h-4 w-4 mr-2" />
             Try Again
           </Button>
           <Button
             onClick={onHome}
-            className="flex-1 btn-gradient py-5 rounded-xl text-base font-medium hover:scale-[1.02] transition-transform"
+            className="flex-1 btn-gradient py-5 rounded-xl text-base font-medium"
           >
-            <Home className="h-4 w-4 mr-2" />
+            <Play className="h-4 w-4 mr-2 fill-current" />
             Continue Learning
           </Button>
         </div>
