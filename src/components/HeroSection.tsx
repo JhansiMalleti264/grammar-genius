@@ -1,76 +1,75 @@
-import { Flame, Play, ArrowRight } from 'lucide-react';
+import { Play, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import heroImage from '@/assets/grammar-hero.png';
+import robotImage from '@/assets/robot-hero.png';
 
 interface HeroSectionProps {
-  streak: number;
   onStartPractice: () => void;
+  onExploreModules: () => void;
 }
 
-const HeroSection = ({ streak, onStartPractice }: HeroSectionProps) => {
-  const scrollToModules = () => {
-    document.getElementById('modules-section')?.scrollIntoView({ behavior: 'smooth' });
-  };
-
+const HeroSection = ({ onStartPractice, onExploreModules }: HeroSectionProps) => {
   return (
-    <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-muted/50 via-background to-primary/5 animate-slide-up">
-      {/* Subtle background elements */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent" />
-      <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-background/80 to-transparent" />
-      
-      <div className="relative z-10 grid md:grid-cols-2 gap-8 items-center p-6 md:p-10 lg:p-12">
+    <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/5 via-muted/60 to-secondary/5 border border-border/50 animate-slide-up">
+      {/* Subtle ambient glow */}
+      <div className="absolute top-0 right-0 w-96 h-96 bg-primary/8 rounded-full blur-3xl" />
+      <div className="absolute bottom-0 left-0 w-72 h-72 bg-secondary/8 rounded-full blur-3xl" />
+
+      <div className="relative z-10 grid md:grid-cols-2 gap-6 items-center p-6 md:p-10 lg:p-14">
         {/* Left: Content */}
         <div className="order-2 md:order-1">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium mb-6 animate-bounce-in">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium mb-6 animate-bounce-in">
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-primary" />
             </span>
             AI-Powered Grammar Learning
           </div>
-          
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4 leading-tight">
+
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4 leading-tight tracking-tight">
             Practice English Skills{' '}
             <span className="text-gradient">with Smart AI Modules</span>
           </h1>
-          
-          <p className="text-muted-foreground text-base md:text-lg mb-6 max-w-lg leading-relaxed">
-            Improve your speaking, reading, writing, and listening with interactive AI-powered exercises.
+
+          <p className="text-muted-foreground text-base md:text-lg mb-8 max-w-lg leading-relaxed">
+            Improve your speaking, reading, writing, and listening with
+            interactive AI-powered exercises.
           </p>
-          
-          {/* Streak Badge */}
-          <div className="streak-badge mb-8 animate-bounce-in animate-delay-100">
-            <Flame className="h-4 w-4" />
-            <span>{streak} Day Streak</span>
-          </div>
-          
+
           {/* CTA Buttons */}
-          <div className="flex flex-wrap items-center gap-4">
-            <Button 
+          <div className="flex flex-wrap items-center gap-3 mb-10">
+            <Button
               onClick={onStartPractice}
               className="btn-gradient px-6 py-5 text-base rounded-xl gap-2"
             >
               <Play className="h-4 w-4 fill-current" />
               Practice Now
             </Button>
-            <Button 
-              variant="ghost"
-              onClick={scrollToModules}
-              className="px-6 py-5 text-base rounded-xl gap-2 text-primary hover:bg-primary/5"
+            <Button
+              variant="outline"
+              onClick={onExploreModules}
+              className="px-6 py-5 text-base rounded-xl gap-2 border-primary/30 text-primary hover:bg-primary/5"
             >
               Explore Modules
               <ArrowRight className="h-4 w-4" />
             </Button>
           </div>
+
+          {/* Stats Row */}
+          <div className="flex items-center gap-6 md:gap-10">
+            <StatItem value="1500+" label="WORDS MASTERED" />
+            <div className="w-px h-10 bg-border" />
+            <StatItem value="12" label="MODULES" />
+            <div className="w-px h-10 bg-border" />
+            <StatItem value="85%" label="AVG. ACCURACY" />
+          </div>
         </div>
-        
-        {/* Right: Hero Image */}
+
+        {/* Right: Robot Image */}
         <div className="order-1 md:order-2 flex items-center justify-center">
-          <div className="relative w-full max-w-lg animate-slide-up animate-delay-100">
-            <img 
-              src={heroImage} 
-              alt="AI Grammar Learning Platform"
+          <div className="relative w-full max-w-sm animate-float">
+            <img
+              src={robotImage}
+              alt="AI Grammar Learning Assistant"
               className="w-full h-auto object-contain drop-shadow-2xl"
             />
           </div>
@@ -79,5 +78,12 @@ const HeroSection = ({ streak, onStartPractice }: HeroSectionProps) => {
     </div>
   );
 };
+
+const StatItem = ({ value, label }: { value: string; label: string }) => (
+  <div>
+    <p className="text-xl md:text-2xl font-bold text-foreground">{value}</p>
+    <p className="text-[11px] font-medium text-muted-foreground tracking-wider uppercase">{label}</p>
+  </div>
+);
 
 export default HeroSection;
