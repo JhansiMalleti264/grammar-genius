@@ -1,27 +1,51 @@
 import { useState } from 'react';
 import { Module, Level } from '@/types/game';
 import Dashboard from '@/components/Dashboard';
+import ModuleDetailScreen from '@/components/ModuleDetailScreen';
 import GameContainer from '@/components/GameContainer';
 
+type AppView = 'dashboard' | 'module-detail' | 'game';
+
 const Index = () => {
+  const [view, setView] = useState<AppView>('dashboard');
   const [selectedModule, setSelectedModule] = useState<Module | null>(null);
   const [selectedLevel, setSelectedLevel] = useState<Level>(1);
 
-  const handleModuleSelect = (module: Module, level: Level) => {
+  const handleModuleSelect = (module: Module) => {
     setSelectedModule(module);
+    setView('module-detail');
+  };
+
+  const handleLevelSelect = (level: Level) => {
     setSelectedLevel(level);
+    setView('game');
   };
 
-  const handleCloseGame = () => {
+  const handleBackToModules = () => {
     setSelectedModule(null);
+    setView('dashboard');
   };
 
-  if (selectedModule) {
+  const handleBackToDetail = () => {
+    setView('module-detail');
+  };
+
+  if (view === 'game' && selectedModule) {
     return (
       <GameContainer
         module={selectedModule}
         level={selectedLevel}
-        onClose={handleCloseGame}
+        onClose={handleBackToDetail}
+      />
+    );
+  }
+
+  if (view === 'module-detail' && selectedModule) {
+    return (
+      <ModuleDetailScreen
+        module={selectedModule}
+        onBack={handleBackToModules}
+        onSelectLevel={handleLevelSelect}
       />
     );
   }
