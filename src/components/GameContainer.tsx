@@ -111,31 +111,30 @@ const GameContainer = ({ module, level, onClose }: GameContainerProps) => {
   }
 
   const renderGame = () => {
-    const gameProps = {
-      key: currentQuestion.id,
+    const sharedProps = {
       question: currentQuestion,
       onAnswer: handleAnswer,
       showResult,
     };
 
     switch (currentQuestion.type) {
-      case 'fill-blanks': return <FillBlanksGame {...gameProps} />;
-      case 'sentence-correction': return <SentenceCorrectionGame {...gameProps} />;
-      case 'word-order': return <WordOrderGame {...gameProps} />;
-      case 'match-pairs': return <MatchPairsGame {...gameProps} />;
-      case 'multiple-choice': return <MultipleChoiceGame {...gameProps} />;
-      case 'spot-error': return <SpotErrorGame {...gameProps} />;
-      case 'transform-sentence': return <TransformSentenceGame {...gameProps} />;
-      case 'context-clues': return <ContextCluesGame {...gameProps} />;
-      case 'dictation': return <DictationGame {...gameProps} />;
-      case 'pronunciation-match': return <PronunciationMatchGame {...gameProps} />;
-      case 'photo-description': return <PhotoDescriptionGame {...gameProps} />;
-      case 'true-false': return <TrueFalseGame {...gameProps} />;
-      case 'listen-choose': return <ListenChooseGame {...gameProps} />;
-      case 'audio-word-match': return <AudioWordMatchGame {...gameProps} />;
-      case 'repeat-sentence': return <RepeatSentenceGame {...gameProps} />;
-      case 'answer-by-voice': return <AnswerByVoiceGame {...gameProps} />;
-      default: return <FillBlanksGame {...gameProps} />;
+      case 'fill-blanks': return <FillBlanksGame key={currentQuestion.id} {...sharedProps} />;
+      case 'sentence-correction': return <SentenceCorrectionGame key={currentQuestion.id} {...sharedProps} />;
+      case 'word-order': return <WordOrderGame key={currentQuestion.id} {...sharedProps} />;
+      case 'match-pairs': return <MatchPairsGame key={currentQuestion.id} {...sharedProps} />;
+      case 'multiple-choice': return <MultipleChoiceGame key={currentQuestion.id} {...sharedProps} />;
+      case 'spot-error': return <SpotErrorGame key={currentQuestion.id} {...sharedProps} />;
+      case 'transform-sentence': return <TransformSentenceGame key={currentQuestion.id} {...sharedProps} />;
+      case 'context-clues': return <ContextCluesGame key={currentQuestion.id} {...sharedProps} />;
+      case 'dictation': return <DictationGame key={currentQuestion.id} {...sharedProps} />;
+      case 'pronunciation-match': return <PronunciationMatchGame key={currentQuestion.id} {...sharedProps} />;
+      case 'photo-description': return <PhotoDescriptionGame key={currentQuestion.id} {...sharedProps} />;
+      case 'true-false': return <TrueFalseGame key={currentQuestion.id} {...sharedProps} />;
+      case 'listen-choose': return <ListenChooseGame key={currentQuestion.id} {...sharedProps} />;
+      case 'audio-word-match': return <AudioWordMatchGame key={currentQuestion.id} {...sharedProps} />;
+      case 'repeat-sentence': return <RepeatSentenceGame key={currentQuestion.id} {...sharedProps} />;
+      case 'answer-by-voice': return <AnswerByVoiceGame key={currentQuestion.id} {...sharedProps} />;
+      default: return <MultipleChoiceGame key={currentQuestion.id} {...sharedProps} />;
     }
   };
 

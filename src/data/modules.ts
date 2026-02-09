@@ -12,7 +12,7 @@ export const modules: Module[] = [
       { level: 2, title: 'Situational Conversations', exercises: 7, completed: 0 },
       { level: 3, title: 'Natural Fluent Dialogues', exercises: 10, completed: 0 },
     ],
-    gameTypes: ['repeat-sentence', 'answer-by-voice', 'fill-blanks'],
+    gameTypes: ['multiple-choice', 'fill-blanks', 'context-clues'],
   },
   {
     id: 'opinion-discussion',
@@ -24,7 +24,7 @@ export const modules: Module[] = [
       { level: 2, title: 'Opinions with Reasons', exercises: 7, completed: 0 },
       { level: 3, title: 'Structured Arguments', exercises: 10, completed: 0 },
     ],
-    gameTypes: ['answer-by-voice', 'multiple-choice', 'transform-sentence'],
+    gameTypes: ['multiple-choice', 'transform-sentence', 'context-clues'],
   },
   {
     id: 'professional-speaking',
@@ -36,7 +36,7 @@ export const modules: Module[] = [
       { level: 2, title: 'Interview Answers', exercises: 7, completed: 0 },
       { level: 3, title: 'Presentations & Problem-Solving', exercises: 10, completed: 0 },
     ],
-    gameTypes: ['repeat-sentence', 'answer-by-voice', 'pronunciation-match'],
+    gameTypes: ['fill-blanks', 'multiple-choice', 'sentence-correction'],
   },
 
   // ─── WRITING MODULES (3) ─────────────────────────────
@@ -74,7 +74,7 @@ export const modules: Module[] = [
       { level: 2, title: 'Structured Professional Writing', exercises: 7, completed: 0 },
       { level: 3, title: 'Advanced Business Communication', exercises: 10, completed: 0 },
     ],
-    gameTypes: ['sentence-correction', 'transform-sentence', 'multiple-choice'],
+    gameTypes: ['sentence-correction', 'transform-sentence', 'spot-error'],
   },
 
   // ─── READING MODULES (3) ─────────────────────────────
@@ -88,7 +88,7 @@ export const modules: Module[] = [
       { level: 2, title: 'Short Paragraphs', exercises: 7, completed: 0 },
       { level: 3, title: 'Complex Passages', exercises: 10, completed: 0 },
     ],
-    gameTypes: ['true-false', 'fill-blanks', 'context-clues'],
+    gameTypes: ['true-false', 'multiple-choice', 'context-clues'],
   },
   {
     id: 'information-reading',
@@ -112,7 +112,7 @@ export const modules: Module[] = [
       { level: 2, title: 'Main Idea + Details', exercises: 7, completed: 0 },
       { level: 3, title: 'Analysis & Inference', exercises: 10, completed: 0 },
     ],
-    gameTypes: ['context-clues', 'true-false', 'photo-description'],
+    gameTypes: ['context-clues', 'true-false', 'multiple-choice'],
   },
 
   // ─── LISTENING MODULES (3) ────────────────────────────
@@ -126,7 +126,7 @@ export const modules: Module[] = [
       { level: 2, title: 'Short Conversations', exercises: 7, completed: 0 },
       { level: 3, title: 'Multi-Sentence Audio', exercises: 10, completed: 0 },
     ],
-    gameTypes: ['listen-choose', 'dictation', 'audio-word-match'],
+    gameTypes: ['listen-choose', 'dictation', 'multiple-choice'],
   },
   {
     id: 'conversation-listening',
@@ -138,7 +138,7 @@ export const modules: Module[] = [
       { level: 2, title: 'Natural-Speed Conversations', exercises: 7, completed: 0 },
       { level: 3, title: 'Complex Discussions', exercises: 10, completed: 0 },
     ],
-    gameTypes: ['listen-choose', 'audio-word-match', 'multiple-choice'],
+    gameTypes: ['listen-choose', 'dictation', 'multiple-choice'],
   },
   {
     id: 'talks-explanations',

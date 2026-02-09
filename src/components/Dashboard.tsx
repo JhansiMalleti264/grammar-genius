@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { Module, Category, Level } from '@/types/game';
+import { Module, Category } from '@/types/game';
 import { modules } from '@/data/modules';
 import HeroSection from './HeroSection';
 import CategoryTabs from './CategoryTabs';
@@ -8,7 +8,7 @@ import { Search, Sparkles } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 
 interface DashboardProps {
-  onModuleSelect: (module: Module, level: Level) => void;
+  onModuleSelect: (module: Module) => void;
 }
 
 const Dashboard = ({ onModuleSelect }: DashboardProps) => {
@@ -26,7 +26,7 @@ const Dashboard = ({ onModuleSelect }: DashboardProps) => {
 
   const handleStartPractice = () => {
     if (filteredModules.length > 0) {
-      onModuleSelect(filteredModules[0], 1);
+      onModuleSelect(filteredModules[0]);
     }
   };
 
@@ -101,7 +101,7 @@ const Dashboard = ({ onModuleSelect }: DashboardProps) => {
                 key={module.id}
                 module={module}
                 index={index}
-                onSelectLevel={onModuleSelect}
+                onSelect={onModuleSelect}
               />
             ))}
           </div>
