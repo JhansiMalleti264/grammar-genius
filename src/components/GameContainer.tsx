@@ -1,6 +1,8 @@
-import { useState, useEffect } from 'react';
-import { Module, Level, Question, GameResult, levelLabels } from '@/types/game';
+import { useState } from 'react';
+import { Module, Level, levelLabels, GameResult } from '@/types/game';
 import { getQuestionsForGame } from '@/data/questions';
+import { getListeningQuestions } from '@/data/listeningQuestions';
+import { getReadingQuestions } from '@/data/readingQuestions';
 import GameProgress from './games/GameProgress';
 import FillBlanksGame from './games/FillBlanksGame';
 import SentenceCorrectionGame from './games/SentenceCorrectionGame';
@@ -14,13 +16,12 @@ import DictationGame from './games/DictationGame';
 import PronunciationMatchGame from './games/PronunciationMatchGame';
 import PhotoDescriptionGame from './games/PhotoDescriptionGame';
 import TrueFalseGame from './games/TrueFalseGame';
-import ListenChooseGame from './games/ListenChooseGame';
-import AudioWordMatchGame from './games/AudioWordMatchGame';
-import RepeatSentenceGame from './games/RepeatSentenceGame';
-import AnswerByVoiceGame from './games/AnswerByVoiceGame';
+import ListeningGameEngine from './games/ListeningGameEngine';
+import ReadingGameEngine from './games/ReadingGameEngine';
 import ResultsPage from './games/ResultsPage';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
+import { Question } from '@/types/game';
 
 interface GameContainerProps {
   module: Module;
@@ -28,24 +29,114 @@ interface GameContainerProps {
   onClose: () => void;
 }
 
+const listeningModuleIds = ['basic-listening', 'conversation-listening', 'talks-explanations'];
+const readingModuleIds = ['sentence-reading', 'information-reading', 'knowledge-reading'];
+
 const GameContainer = ({ module, level, onClose }: GameContainerProps) => {
-  const [questions, setQuestions] = useState<Question[]>([]);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [showResult, setShowResult] = useState(false);
-  const [answers, setAnswers] = useState<GameResult['answers']>([]);
   const [isComplete, setIsComplete] = useState(false);
+  const [gameResult, setGameResult] = useState<GameResult | null>(null);
   const [startTime] = useState(Date.now());
 
-  useEffect(() => {
-    // Gather questions from all game types for this module
+  // ── Listening modules → dedicated engine ──
+  if (listeningModuleIds.includes(module.id)) {
+    const listeningQs = getListeningQuestions(module.id, level);
+
+    if (isComplete && gameResult) {
+      return (
+        <ResultsPage
+          result={gameResult}
+          onRetry={() => { setIsComplete(false); setGameResult(null); }}
+          onHome={onClose}
+          moduleTitle={module.title}
+          levelLabel={levelLabels[level]}
+        />
+      );
+    }
+
+    return (
+      <ListeningGameEngine
+        questions={listeningQs}
+        onClose={onClose}
+        onComplete={(results) => {
+          const gr: GameResult = {
+            totalQuestions: results.length,
+            correctAnswers: results.filter(r => r.isCorrect).length,
+            answers: results.map(r => ({
+              questionId: r.questionId,
+              userAnswer: r.userAnswer,
+              isCorrect: r.isCorrect,
+              correctAnswer: r.correctAnswer,
+              explanation: r.explanation,
+            })),
+            timeTaken: Math.floor((Date.now() - startTime) / 1000),
+          };
+          setGameResult(gr);
+          setIsComplete(true);
+        }}
+      />
+    );
+  }
+
+  // ── Reading modules → dedicated engine ──
+  if (readingModuleIds.includes(module.id)) {
+    const readingQs = getReadingQuestions(module.id, level);
+
+    if (isComplete && gameResult) {
+      return (
+        <ResultsPage
+          result={gameResult}
+          onRetry={() => { setIsComplete(false); setGameResult(null); }}
+          onHome={onClose}
+          moduleTitle={module.title}
+          levelLabel={levelLabels[level]}
+        />
+      );
+    }
+
+    return (
+      <ReadingGameEngine
+        questions={readingQs}
+        onClose={onClose}
+        onComplete={(results) => {
+          const gr: GameResult = {
+            totalQuestions: results.length,
+            correctAnswers: results.filter(r => r.isCorrect).length,
+            answers: results.map(r => ({
+              questionId: r.questionId,
+              userAnswer: r.userAnswer,
+              isCorrect: r.isCorrect,
+              correctAnswer: r.correctAnswer,
+              explanation: r.explanation,
+            })),
+            timeTaken: Math.floor((Date.now() - startTime) / 1000),
+          };
+          setGameResult(gr);
+          setIsComplete(true);
+        }}
+      />
+    );
+  }
+
+  // ── Speaking / Writing modules → existing game system ──
+  return <LegacyGameFlow module={module} level={level} onClose={onClose} />;
+};
+
+/** Existing game flow for speaking/writing modules */
+const LegacyGameFlow = ({ module, level, onClose }: GameContainerProps) => {
+  const [questions, setQuestions] = useState<Question[]>(() => {
     const allQuestions: Question[] = [];
     for (const gameType of module.gameTypes) {
       allQuestions.push(...getQuestionsForGame(gameType));
     }
     const shuffled = [...allQuestions].sort(() => Math.random() - 0.5);
     const exerciseCount = module.levels.find(l => l.level === level)?.exercises ?? 5;
-    setQuestions(shuffled.slice(0, Math.min(exerciseCount, shuffled.length)));
-  }, [module, level]);
+    return shuffled.slice(0, Math.min(exerciseCount, shuffled.length));
+  });
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [showResult, setShowResult] = useState(false);
+  const [answers, setAnswers] = useState<GameResult['answers']>([]);
+  const [isComplete, setIsComplete] = useState(false);
+  const [startTime] = useState(Date.now());
 
   const currentQuestion = questions[currentIndex];
 
@@ -130,10 +221,6 @@ const GameContainer = ({ module, level, onClose }: GameContainerProps) => {
       case 'pronunciation-match': return <PronunciationMatchGame key={currentQuestion.id} {...sharedProps} />;
       case 'photo-description': return <PhotoDescriptionGame key={currentQuestion.id} {...sharedProps} />;
       case 'true-false': return <TrueFalseGame key={currentQuestion.id} {...sharedProps} />;
-      case 'listen-choose': return <ListenChooseGame key={currentQuestion.id} {...sharedProps} />;
-      case 'audio-word-match': return <AudioWordMatchGame key={currentQuestion.id} {...sharedProps} />;
-      case 'repeat-sentence': return <RepeatSentenceGame key={currentQuestion.id} {...sharedProps} />;
-      case 'answer-by-voice': return <AnswerByVoiceGame key={currentQuestion.id} {...sharedProps} />;
       default: return <MultipleChoiceGame key={currentQuestion.id} {...sharedProps} />;
     }
   };
@@ -146,9 +233,7 @@ const GameContainer = ({ module, level, onClose }: GameContainerProps) => {
           totalQuestions={questions.length}
           onClose={onClose}
         />
-
         {renderGame()}
-
         {showResult && (
           <Button
             onClick={handleNext}
