@@ -64,14 +64,48 @@ const HeroSection = ({ onStartPractice, onExploreModules }: HeroSectionProps) =>
           </div>
         </div>
 
-        {/* Right: Robot Image */}
+        {/* Right: Robot Image with orbital animation */}
         <div className="order-1 md:order-2 flex items-center justify-center">
-          <div className="relative w-full max-w-sm animate-float">
-            <img
-              src={robotImage}
-              alt="AI Grammar Learning Assistant"
-              className="w-full h-auto object-contain drop-shadow-2xl"
-            />
+          <div className="relative w-full max-w-sm">
+            {/* Orbiting rings */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-[85%] h-[85%] rounded-full border border-primary/20 animate-[spin_12s_linear_infinite]" />
+            </div>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-[95%] h-[95%] rounded-full border border-secondary/15 animate-[spin_18s_linear_infinite_reverse]" />
+            </div>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-[105%] h-[105%] rounded-full border border-primary/10 animate-[spin_25s_linear_infinite]" />
+            </div>
+
+            {/* Orbiting dots */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-[85%] h-[85%] animate-[spin_12s_linear_infinite]">
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-primary shadow-glow" />
+              </div>
+            </div>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-[95%] h-[95%] animate-[spin_18s_linear_infinite_reverse]">
+                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-2.5 h-2.5 rounded-full bg-secondary shadow-md" />
+              </div>
+            </div>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-[105%] h-[105%] animate-[spin_25s_linear_infinite]">
+                <div className="absolute top-1/2 right-0 translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-primary/60" />
+              </div>
+            </div>
+
+            {/* Pulsing glow behind robot */}
+            <div className="absolute inset-[15%] rounded-full bg-gradient-primary opacity-10 animate-pulse-soft blur-2xl" />
+
+            {/* Robot image */}
+            <div className="relative z-10 animate-float">
+              <img
+                src={robotImage}
+                alt="AI Grammar Learning Assistant"
+                className="w-full h-auto object-contain drop-shadow-2xl"
+              />
+            </div>
           </div>
         </div>
       </div>
